@@ -5,6 +5,10 @@
 **Estimated play time:** 10–20 minutes  
 **Platform:** Static website on GitHub Pages; no installation required for players
 
+## CTF
+
+https://gi19.github.io/266---CTF/flag.html
+
 ## Scenario
 
 An automated scanner marked `system_update.py` safe during a 30-second observation window. A later report suggests a suspicious file modification occurred outside that window. Investigate the evidence, analyze the script, neutralize the waiting operation, and verify the results to unlock the final flag.
