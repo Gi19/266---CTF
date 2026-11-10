@@ -27,26 +27,6 @@ All files, logs, timestamps, and scanner outcomes are fictional. The website **d
 
 **Hint 2:** Examine the preparation routine for an instruction that pauses execution. Try removing only the pause without deleting the operation that modifies the file.
 
-## Run locally
-
-Open `index.html` in a browser, then click **Start Investigation**. All stages work without Docker, Python, or a web server. Browser `sessionStorage` tracks stage completion within the current tab/session; reopening the challenge in a different tab or session may reset progress.
-
-## Publish on GitHub Pages
-
-1. Create a repository such as `sleeping-process-ctf`.
-2. Upload all five HTML files, `style.css`, and this `README.md` to the repository root.
-3. In **Settings → Pages**, select **Deploy from a branch**, branch `main`, directory `/(root)`.
-4. Your website will normally be at `https://YOUR-USERNAME.github.io/sleeping-process-ctf/`.
-
-Replace `YOUR-USERNAME` with your actual GitHub username.
-
-## Developer / instructor notes
-
-- The intended solution is a minimal source edit that eliminates the execution delay while preserving the file modification. Scanner results are simulated in the browser.
-- Stage 4 explains why the modified program is detected during the scanner's 30-second observation period and the original one is not.
-- The exact simulated file-modification time in the original scenario is **14:33:39**; the **14:34:07** event is the time a separate report was received.
-- The flag is protected only by client-side game logic and is therefore inspectable in source code. This is sufficient for a casual educational demonstration, **not** a tamper-resistant CTF. For stronger protection use server-side validation on an appropriate hosting platform.
-- Keep the separate full walkthrough/solution guide out of the public player repository until after the class CTF event if you want to preserve the puzzle.
 
 ## References
 
