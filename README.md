@@ -7,7 +7,7 @@
 
 ## CTF
 
-https://gi19.github.io/266---CTF/flag.html
+https://gi19.github.io/266---CTF/investigation.html
 
 ## Scenario
 
