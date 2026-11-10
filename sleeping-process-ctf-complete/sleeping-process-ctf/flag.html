@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="The Sleeping Process CTF – final flag recovery.">
+  <title>Flag Recovery | The Sleeping Process</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .stage{max-width:920px;margin:auto;padding:72px 30px 95px}.kicker{color:var(--teal);font:12px Consolas,monospace;letter-spacing:1.4px}.stage h1{font-size:clamp(42px,7vw,80px);line-height:1.05;margin:16px 0 20px}.intro{color:var(--dim);max-width:750px}.panel{border:1px solid #38536a;background:#0d1c2c;border-radius:10px;overflow:hidden;margin-top:32px}.panel-head{background:#15283b;padding:15px 20px;border-bottom:1px solid #38536a;font:12px Consolas,monospace;color:#a8dde0}.panel-body{padding:27px}.checks{display:grid;gap:14px;margin:0 0 27px}.check{display:flex;align-items:center;gap:12px;border:1px solid #355369;padding:13px 17px;background:#142a39;font-size:14px}.check span{color:#9ef1b3;font-weight:bold}.flag-value{font:clamp(14px,2.4vw,23px)/1.5 Consolas,monospace;letter-spacing:.3px;overflow-wrap:anywhere;padding:24px;background:#061421;color:#95f4b4;border:1px dashed #44866c;border-radius:6px;margin:22px 0}.flag-value code{font:inherit}.controls{display:flex;flex-wrap:wrap;gap:13px;align-items:center}.primary-button{cursor:pointer;font-family:inherit}.outline{cursor:pointer;border:1px solid #5d7388;background:#10253a;color:#dfecf5;padding:14px 17px;font:12px Consolas,monospace}.outline:hover{border-color:var(--teal)}.feedback{margin-top:15px;color:#a4f3bb;font-size:14px}.note{font-size:13px;color:#9bb1c5;margin-top:22px}.locked{padding:23px;background:#172537;border:1px solid #516984;border-radius:8px;margin-top:28px}.locked a{display:inline-block;margin-top:10px}.back{display:inline-block;margin-top:35px}[hidden]{display:none!important}
+    @media(max-width:620px){.stage{padding:44px 18px 68px}.stage h1{letter-spacing:-2px}.panel-body{padding:18px}}
+  </style>
+</head>
+<body>
+  <div class="ambient ambient-one" aria-hidden="true"></div>
+  <header class="site-header"><a class="brand" href="index.html"><span class="brand-symbol">◈</span> CYBER <b>266</b> <span class="brand-secondary">/ CTF LAB</span></a><span class="top-status"><span class="status-dot"></span> CASE FILE 001</span></header>
+  <main class="stage">
+    <p class="kicker">STAGE 05 / FLAG RECOVERY</p>
+    <h1>CASE <em>CLOSED.</em></h1>
+    <p class="intro">The flag is released after your simulated scanner detects the modified program's activity and you correctly explain the missed detection.</p>
+    <div class="locked" id="locked" hidden>
+      <h2>◈ Flag locked</h2>
+      <p id="locked-reason">Complete the earlier investigation stages to unlock flag recovery.</p>
+      <a href="investigation.html" class="primary-button">← RETURN TO CODE INVESTIGATION</a>
+    </div>
+    <section class="panel" id="recovery" aria-labelledby="recovery-title" hidden>
+      <div class="panel-head">◉ INCIDENT RESPONSE / CASE #266-017 — ACCESS GRANTED</div>
+      <div class="panel-body">
+        <h2 id="recovery-title">Investigation verified</h2>
+        <p>Your work supports the following conclusions:</p>
+        <div class="checks">
+          <div class="check"><span>✓</span> Execution delay removed while the file modification remains intact</div>
+          <div class="check"><span>✓</span> Simulated scanner detects the file modification during monitoring</div>
+          <div class="check"><span>✓</span> Timeline analysis correctly explains how Delay Execution evaded the original scan</div>
+        </div>
+        <button class="primary-button" id="reveal" type="button">⚑ RELEASE FLAG <span aria-hidden="true">→</span></button>
+        <div id="flag-section" hidden>
+          <p style="margin:28px 0 0;color:#a6e7d6;font:12px Consolas,monospace">FLAG RECOVERED / CYBER266 FORMAT</p>
+          <div class="flag-value"><code id="flag-text"></code></div>
+          <div class="controls"><button type="button" id="copy" class="outline">COPY FLAG</button><a href="index.html" class="secondary-link">RETURN TO MISSION BRIEFING ↗</a></div>
+          <p id="copy-feedback" class="feedback" role="status" aria-live="polite"></p>
+          <p class="note">Submit this flag wherever your instructor collects CTF answers. This static website does not transmit or record submissions.</p>
+        </div>
+      </div>
+    </section>
+    <a href="timeline.html" class="secondary-link back">← BACK TO TIMELINE VERIFICATION</a>
+    <p class="note">Educational simulation only. The site runs no Python and uses browser session state to track progress; this is not a secure, server-verified CTF platform.</p>
+  </main>
+  <footer>CYBER 266 // ADVERSARIAL MINDSET <span>THE SLEEPING PROCESS</span></footer>
+  <script>
+    'use strict';
+    const stage3 = sessionStorage.getItem('cyber266_stage3_complete') === 'yes';
+    const stage4 = sessionStorage.getItem('cyber266_stage4_complete') === 'yes';
+    document.getElementById('locked').hidden = stage3 && stage4;
+    document.getElementById('recovery').hidden = !(stage3 && stage4);
+    if (!(stage3 && stage4)) {
+      document.getElementById('locked-reason').textContent = !stage3 ?
+        'Return to Stage 3, remove the execution delay, and run the successful scanner test.' :
+        'Stage 3 is complete. Return to Stage 4 and correctly answer the final timeline question.';
+    } else {
+      document.getElementById('reveal').addEventListener('click', () => {
+        // Static educational flag: browser-side visibility is not secure against source inspection.
+        const parts = ['CYBER266{', 'DELAY_REMOVED_', 'DETECTION_RESTORED', '}'];
+        document.getElementById('flag-text').textContent = parts.join('');
+        document.getElementById('flag-section').hidden = false;
+        document.getElementById('reveal').hidden = true;
+      });
+      document.getElementById('copy').addEventListener('click', async () => {
+        const value = document.getElementById('flag-text').textContent;
+        const feedback = document.getElementById('copy-feedback');
+        try {
+          if (!navigator.clipboard || !navigator.clipboard.writeText) throw new Error('Clipboard unavailable');
+          await navigator.clipboard.writeText(value);
+          feedback.textContent = '✓ Flag copied to clipboard.';
+        } catch (_) {
+          feedback.textContent = 'Select the flag above and copy it manually (Ctrl+C).';
+        }
+      });
+    }
+  </script>
+</body>
+</html>

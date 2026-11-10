@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="The Sleeping Process CTF – Stage 3 interactive code investigation.">
+  <title>Code Investigation | The Sleeping Process</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .lab{max-width:1120px;margin:auto;padding:62px 30px 90px}
+    .kicker{color:var(--teal);font:12px Consolas,monospace;letter-spacing:1.5px;margin:0 0 16px}
+    .lab h1{font-size:clamp(42px,6vw,72px);line-height:1.05;margin:0 0 22px}
+    .intro{color:var(--dim);max-width:770px;margin:0 0 28px}
+    .case-strip{display:flex;flex-wrap:wrap;gap:12px;margin:26px 0 32px}
+    .case-strip span{background:#102338;border:1px solid #294259;color:#b6cbd7;padding:9px 13px;font:11px Consolas,monospace}
+    .case-strip strong{color:var(--teal)}
+    .workspace{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(260px,.7fr);gap:20px;align-items:start}
+    .panel{background:#0c1929;border:1px solid #355269;border-radius:9px;overflow:hidden}
+    .panel-title{background:#15273b;border-bottom:1px solid #355269;display:flex;justify-content:space-between;gap:8px;align-items:center;padding:13px 17px;color:#bce5ee;font:12px Consolas,monospace}
+    .panel-title small{color:#94a9bc;font:10px Consolas,monospace}
+    #code-editor{display:block;width:100%;min-height:580px;padding:21px;resize:vertical;border:0;outline:none;background:#07121e;color:#e5f0f5;font:13px/1.7 Consolas,'Courier New',monospace;tab-size:4;white-space:pre;overflow:auto}
+    #code-editor:focus-visible{box-shadow:inset 0 0 0 2px var(--teal)}
+    .sidebar-content{padding:22px}.sidebar-content h2{font-size:19px;margin:0 0 12px}.sidebar-content p{font-size:14px;color:#b4c3d3}.sidebar-content ol{padding-left:20px;font-size:14px;color:#c4d2df}.sidebar-content li{margin-bottom:12px}.separator{border-top:1px solid #304457;margin:20px 0}
+    .sidebar-content code{color:#b6f6d8;overflow-wrap:anywhere}
+    .buttonbar{display:flex;gap:11px;flex-wrap:wrap;align-items:center;margin:21px 0}
+    .primary-button{cursor:pointer;font-family:inherit}
+    .outline-button{font:700 11px Consolas,monospace;letter-spacing:.5px;color:#c7dae7;background:#122438;border:1px solid #415c73;padding:15px 17px;cursor:pointer}
+    .outline-button:hover{border-color:var(--teal);color:#fff}.outline-button:focus-visible{outline:2px solid white;outline-offset:3px}
+    .hintbox{background:#1c2940;border:1px solid #405777;padding:15px 18px;margin-top:12px;color:#d2e1f7;font-size:14px}
+    .output{background:#07121d;border:1px solid #395068;border-radius:8px;overflow:hidden;margin-top:30px}
+    .output-title{font:12px Consolas,monospace;background:#15263a;color:#8cd6de;padding:13px 17px;border-bottom:1px solid #395068}
+    #scan-output{padding:20px;margin:0;min-height:140px;white-space:pre-wrap;overflow-wrap:anywhere;font:13px/1.8 Consolas,monospace;color:#cad9e5}
+    .result{padding:17px 19px;margin:17px 0 0;border-radius:5px;font-size:14px}
+    .result.success{background:#153c2d;border:1px solid #3a815c;color:#b5f3ca}
+    .result.error{background:#412823;border:1px solid #965a4c;color:#ffd3bd}
+    .result.info{background:#192e44;border:1px solid #486b87;color:#c1dfef}
+    .next{margin-top:22px}.back{display:inline-block;margin-top:36px}
+    [hidden]{display:none!important}
+    @media(max-width:850px){.workspace{grid-template-columns:1fr}.lab{padding:45px 18px 65px}.lab h1{letter-spacing:-2px}#code-editor{min-height:520px}}
+    @media(max-width:520px){#code-editor{font-size:11px;padding:12px}.panel-title{padding:12px}}
+  </style>
+</head>
+<body>
+  <div class="ambient ambient-one" aria-hidden="true"></div>
+  <header class="site-header">
+    <a class="brand" href="index.html"><span class="brand-symbol">◈</span> CYBER <b>266</b> <span class="brand-secondary">/ CTF LAB</span></a>
+    <span class="top-status"><span class="status-dot"></span> CASE FILE 001</span>
+  </header>
+  <main class="lab">
+    <p class="kicker">STAGE 03 / CODE INVESTIGATION</p>
+    <h1>NEUTRALIZE THE <em>SLEEPING PROCESS.</em></h1>
+    <p class="intro">Your team recovered the source code of <code>system_update.py</code>. The scanner watched this process for only 30 seconds. Find what keeps the file modification hidden during the scan, then make the smallest possible change so the scanner can detect it. Do not delete the file modification.</p>
+    <div class="case-strip">
+      <span>PROCESS START <strong>14:32:02</strong></span>
+      <span>SCAN ENDS <strong>14:32:30</strong></span>
+      <span>TECHNIQUE <strong>T1678</strong></span>
+    </div>
+    <div class="workspace">
+      <section class="panel" aria-label="Editable Python code">
+        <div class="panel-title"><span>⌘ &nbsp;system_update.py</span><small>EDITABLE · PYTHON</small></div>
+        <label for="code-editor" class="sr-only">Edit the suspicious Python source</label>
+        <textarea id="code-editor" spellcheck="false" autocomplete="off" autocapitalize="off" aria-label="Editable suspicious Python source"></textarea>
+      </section>
+      <aside class="panel">
+        <div class="panel-title"><span>◈ &nbsp;ANALYST NOTES</span><small>CASE #266-017</small></div>
+        <div class="sidebar-content">
+          <h2>Your objective</h2>
+          <ol>
+            <li>Trace the functions called by <code>main()</code>.</li>
+            <li>Identify the operation that postpones the file modification.</li>
+            <li>Remove or comment out only that delay operation.</li>
+            <li>Click <strong>Run Scanner Test</strong> and examine the result.</li>
+          </ol>
+          <div class="separator"></div>
+          <h2>Evidence</h2>
+          <p>The scanner began at <strong>14:32:00</strong> and stopped at <strong>14:32:30</strong>. A separate reporting system later received a file-modification alert at <strong>14:34:07</strong>.</p>
+          <p>The report time is when the notification arrived—not necessarily when the file was modified.</p>
+          <div class="separator"></div>
+          <button type="button" id="hint-toggle" class="outline-button" aria-expanded="false" aria-controls="hint-1">HINT 1 ▾</button>
+          <div id="hint-1" class="hintbox" hidden>Follow the function calls in <code>main()</code>. Which function runs immediately before the file is modified?</div>
+          <div style="height:12px"></div>
+          <button type="button" id="hint2-toggle" class="outline-button" aria-expanded="false" aria-controls="hint-2">HINT 2 ▾</button>
+          <div id="hint-2" class="hintbox" hidden>A waiting function inside the update preparation routine pauses execution. You can remove that statement or turn it into a Python comment.</div>
+        </div>
+      </aside>
+    </div>
+    <div class="buttonbar">
+      <button id="test" type="button" class="primary-button">▶ RUN SCANNER TEST <span aria-hidden="true">→</span></button>
+      <button id="reset" type="button" class="outline-button">↺ RESET CODE</button>
+    </div>
+    <section class="output" aria-label="Scanner output">
+      <div class="output-title">◉ scanner_simulation.log <span style="float:right;color:#a2b3c7">SIMULATED</span></div>
+      <pre id="scan-output" aria-live="polite">[READY] Scanner simulation initialized.
+[READY] Edit the Python script and select RUN SCANNER TEST.</pre>
+    </section>
+    <div class="result info" id="result" role="status" aria-live="polite">Your goal: make the suspicious activity visible inside the scanner's 30-second window.</div>
+    <div class="next" id="next" hidden><a class="primary-button" href="timeline.html">CONTINUE TO TIMELINE VERIFICATION <span aria-hidden="true">↗</span></a></div>
+    <a href="report.html" class="secondary-link back">← BACK TO SECURITY REPORT</a>
+    <p style="font-size:12px;color:#849bb0;margin-top:24px">Training environment: Python is not actually executed. The browser verifies a minimal code change and simulates the resulting timeline. Your edits are not uploaded or stored on a server.</p>
+  </main>
+  <footer>CYBER 266 // ADVERSARIAL MINDSET <span>THE SLEEPING PROCESS</span></footer>
+  <script>
+    'use strict';
+    const source = `import os
+import time
+from datetime import datetime
+
+LOG_FILE = "system_log.txt"
+UPDATE_VERSION = "2.4.1"
+
+def log_message(message):
+    timestamp = datetime.now().strftime("%H:%M:%S")
+    print(f"[{timestamp}] {message}")
+
+def check_system():
+    log_message("Checking system compatibility...")
+    return os.name
+
+def prepare_update():
+    log_message("Preparing system update...")
+    maintenance_window = 97
+    time.sleep(maintenance_window)
+    log_message("Preparation complete.")
+
+def install_update():
+    log_message("Installing update...")
+    with open(LOG_FILE, "w") as file:
+        file.write("Unexpected system modification")
+    log_message("Update completed.")
+
+def main():
+    log_message(f"System Update v{UPDATE_VERSION}")
+    check_system()
+    prepare_update()
+    install_update()
+
+if __name__ == "__main__":
+    main()`;
+    const editor = document.getElementById('code-editor');
+    const output = document.getElementById('scan-output');
+    const result = document.getElementById('result');
+    const next = document.getElementById('next');
+    const expected = source.split('\n');
+    const delayIndex = expected.findIndex(line => line.trim() === 'time.sleep(maintenance_window)');
+    editor.value = source;
+
+    function normalize(text) { return text.replace(/\r\n/g, '\n').replace(/\r/g, '\n'); }
+    function isMinimalFix(text) {
+      const modified = normalize(text).split('\n');
+      const withoutDelay = expected.filter((_, index) => index !== delayIndex);
+      // Accept either removing the delay line or commenting it out.
+      const removed = modified.join('\n') === withoutDelay.join('\n');
+      const commented = modified.length === expected.length && modified.every((line, index) =>
+        index === delayIndex ? /^\s*#\s*time\.sleep\(maintenance_window\)\s*$/.test(line) : line === expected[index]);
+      return removed || commented;
+    }
+    function showResult(kind, message, log) {
+      result.className = 'result ' + kind;
+      result.textContent = message;
+      output.textContent = log;
+      next.hidden = kind !== 'success';
+    }
+    document.getElementById('test').addEventListener('click', () => {
+      const candidate = normalize(editor.value);
+      if (candidate === source) {
+        showResult('error', 'Scanner missed the activity. Find the instruction that makes the process wait, then try again.',
+          '[14:32:00] Scanner started.\n[14:32:02] Process started.\n[14:32:30] Scan completed — no suspicious activity found.\n[14:33:39] File modification occurred (outside monitoring window).\n[14:34:07] External report received.');
+      } else if (isMinimalFix(candidate)) {
+        sessionStorage.setItem('cyber266_stage3_complete', 'yes');
+        sessionStorage.removeItem('cyber266_stage4_complete');
+        showResult('success', 'DETECTED! You removed the execution delay while preserving the file modification. Stage 4 is now unlocked.',
+          '[14:32:00] Scanner started.\n[14:32:02] Process started.\n[14:32:02] Unexpected file modification DETECTED.\n[14:32:30] Scan completed — suspicious behavior observed.\n\n[RESULT] The 97-second execution delay was neutralized.');
+      } else {
+        sessionStorage.removeItem('cyber266_stage3_complete');
+        sessionStorage.removeItem('cyber266_stage4_complete');
+        showResult('error', 'Verification unsuccessful. Keep the rest of the script unchanged and remove or comment out only the execution delay.',
+          '[CHECK] The program differs from the expected minimal fix.\n[CHECK] File modification must remain intact.\n[CHECK] No arbitrary changes are allowed in this exercise.');
+      }
+    });
+    editor.addEventListener('input', () => { next.hidden = true; sessionStorage.removeItem('cyber266_stage3_complete');
+        sessionStorage.removeItem('cyber266_stage4_complete'); result.className = 'result info'; result.textContent = 'Unsaved changes to the simulated script. Run a new scanner test.'; });
+    document.getElementById('reset').addEventListener('click', () => {
+      editor.value = source;
+      sessionStorage.removeItem('cyber266_stage3_complete');
+        sessionStorage.removeItem('cyber266_stage4_complete');
+      showResult('info', 'Script reset. Try your investigation again.', '[READY] Scanner simulation initialized.\n[READY] Edit the Python script and select RUN SCANNER TEST.');
+    });
+    for (const [buttonId, hintId] of [['hint-toggle','hint-1'], ['hint2-toggle','hint-2']]) {
+      const button = document.getElementById(buttonId);
+      const hint = document.getElementById(hintId);
+      button.addEventListener('click', () => { hint.hidden = !hint.hidden; button.setAttribute('aria-expanded', String(!hint.hidden)); });
+    }
+  </script>
+</body>
+</html>

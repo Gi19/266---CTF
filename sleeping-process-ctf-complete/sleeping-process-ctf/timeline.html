@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="The Sleeping Process CTF – Stage 4 timeline verification.">
+  <title>Timeline Verification | The Sleeping Process</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .stage{max-width:1100px;margin:auto;padding:62px 30px 90px}.kicker{color:var(--teal);font:12px Consolas,monospace;letter-spacing:1.4px}.stage h1{font-size:clamp(42px,6vw,72px);line-height:1.04;margin:13px 0 21px}.intro{max-width:790px;color:var(--dim);margin-bottom:30px}
+    .panel{background:#0c1929;border:1px solid #355269;border-radius:9px;overflow:hidden;margin:22px 0}.panel-head{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;padding:15px 20px;background:#15273b;border-bottom:1px solid #355269;color:#bce5ee;font:12px Consolas,monospace}.panel-body{padding:24px}
+    .legend{display:flex;flex-wrap:wrap;gap:19px;margin-bottom:17px;font:12px Consolas,monospace;color:#c9d7e4}.legend i{display:inline-block;width:11px;height:11px;margin-right:7px;border-radius:2px}.scan{background:#edbd65}.hit{background:#77dfa2}.miss{background:#fb9c86}
+    .timeline{margin:20px 0 26px}.timeline h3{font-size:17px;margin:0 0 4px}.timeline .sub{color:#9fb4c7;font:12px Consolas,monospace;margin:0 0 13px}.time-track{height:42px;background:#223247;border:1px solid #41536c;position:relative;border-radius:5px;margin:0 0 15px;overflow:visible}.time-track:before{content:"";position:absolute;left:0;top:0;bottom:0;width:23.1%;background:#e5ae52;border-radius:4px 0 0 4px;opacity:.9}.time-track:after{content:"SCAN ENDS";position:absolute;left:23.1%;top:-18px;transform:translateX(-50%);font:9px Consolas,monospace;color:#e9bf7a;white-space:nowrap}.event{position:absolute;top:50%;transform:translate(-50%,-50%);width:16px;height:16px;border:3px solid #09192b;border-radius:50%;box-shadow:0 0 0 2px currentColor}.event.delayed{left:77.7%;background:#fb9c86;color:#fb9c86}.event.immediate{left:1.7%;background:#77dfa2;color:#77dfa2}.scale{display:flex;justify-content:space-between;gap:10px;font:11px Consolas,monospace;color:#92a8bb}.comparison-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.stat{padding:17px;background:#102438;border:1px solid #315167}.stat small{display:block;font:11px Consolas,monospace;color:#9cbbcd}.stat strong{font-size:17px;display:block;margin-top:8px}.stat p{font-size:12px;color:#b4c7d7;margin:8px 0 0}
+    .quiz{padding:26px;background:#0f1d2c;border:1px solid #355269;border-radius:9px;margin:34px 0}.quiz h2{font-size:23px;margin:10px 0}.quiz-label{font:12px Consolas,monospace;color:var(--teal)}.choices{display:grid;gap:10px;margin:22px 0}.choice{display:flex;gap:12px;align-items:flex-start;padding:14px;border:1px solid #355068;border-radius:5px;background:#132539;cursor:pointer}.choice:has(input:checked){border-color:var(--teal);background:#1a3946}.choice input{accent-color:var(--teal);margin-top:4px}.choice span{font-size:14px}.actions{display:flex;flex-wrap:wrap;align-items:center;gap:11px}.primary-button{cursor:pointer;font-family:inherit}.outline{border:1px solid #60768b;background:#13283b;color:#d1e5ef;padding:14px 17px;cursor:pointer;font:12px Consolas,monospace}.feedback{padding:17px 19px;border-radius:5px;margin:19px 0;font-size:14px}.success{background:#153c2d;color:#b5f3ca;border:1px solid #3a815c}.error{background:#412823;color:#ffd3bd;border:1px solid #965a4c}.hint{margin:15px 0;color:#f3d8a2}.back{display:inline-block;margin-top:24px}.locked{margin:34px 0;padding:26px;border:1px solid #62738b;background:#152437;border-radius:8px}.locked a{display:inline-block;margin-top:8px}
+    [hidden]{display:none!important}@media(max-width:680px){.stage{padding:40px 18px 68px}.panel-body{padding:18px}.comparison-grid{grid-template-columns:1fr}.quiz{padding:18px}.stage h1{letter-spacing:-2px}.scale{font-size:9px}}
+  </style>
+</head>
+<body>
+  <div class="ambient ambient-one" aria-hidden="true"></div>
+  <header class="site-header"><a class="brand" href="index.html"><span class="brand-symbol">◈</span> CYBER <b>266</b> <span class="brand-secondary">/ CTF LAB</span></a><span class="top-status"><span class="status-dot"></span> CASE FILE 001</span></header>
+  <main class="stage">
+    <p class="kicker">STAGE 04 / TIMELINE VERIFICATION</p>
+    <h1>VERIFY THE <em>DETECTION.</em></h1>
+    <div id="locked" class="locked" hidden>
+      <h2>◈ Investigation not yet verified</h2>
+      <p>First, successfully modify the script and run the scanner test on Stage 3. Return here after the scanner detects the file modification.</p>
+      <a class="primary-button" href="investigation.html">← RETURN TO CODE INVESTIGATION</a>
+    </div>
+    <div id="stage-content" hidden>
+      <p class="intro">Your code modification caused the simulated scanner to detect the file modification. Compare the original and modified execution timelines, then explain why the original scan missed the activity.</p>
+      <section class="panel" aria-labelledby="timeline-title">
+        <div class="panel-head"><span id="timeline-title">◉ EVENT COMPARISON / CASE #266-017</span><span>OBSERVATION WINDOW: 30 SECONDS</span></div>
+        <div class="panel-body">
+          <div class="legend"><span><i class="scan"></i>Scanner active</span><span><i class="miss"></i>Missed event</span><span><i class="hit"></i>Detected event</span></div>
+          <div class="timeline">
+            <h3>Original script <span style="color:#f8ba94">— NOT DETECTED</span></h3>
+            <p class="sub">Process starts 14:32:02 · execution waits 97 seconds</p>
+            <div class="time-track" role="img" aria-label="Scanner operates from 14:32:00 to 14:32:30. Original file modification happens at 14:33:39, after scanning ends."><span class="event delayed" title="File modified at 14:33:39"></span></div>
+            <div class="scale"><span>14:32:00 — scan begins</span><span>14:33:39 — file modified</span><span>14:34:10</span></div>
+          </div>
+          <div class="timeline">
+            <h3>Modified script <span style="color:#98edb3">— DETECTED</span></h3>
+            <p class="sub">Delay removed · file modification occurs at approximately 14:32:02</p>
+            <div class="time-track" role="img" aria-label="Scanner operates from 14:32:00 to 14:32:30. Modified file modification happens at 14:32:02, while scanning is active."><span class="event immediate" title="File modified at 14:32:02"></span></div>
+            <div class="scale"><span>14:32:00 — scan begins</span><span>14:32:02 — file modified</span><span>14:34:10</span></div>
+          </div>
+          <div class="comparison-grid">
+            <div class="stat"><small>ORIGINAL TEST / FILE EVENT</small><strong style="color:#f8ba94">14:33:39 — Missed</strong><p>The scanner finished at 14:32:30, before the delayed activity occurred.</p></div>
+            <div class="stat"><small>MODIFIED TEST / FILE EVENT</small><strong style="color:#98edb3">14:32:02 — Detected</strong><p>The same harmless file modification occurs during the active scan window.</p></div>
+          </div>
+          <p style="font-size:12px;color:#9eb1c5;margin:22px 0 0">Evidence note: 14:34:07 in Stage 2 is the time an external report arrived, not the exact time the file was modified. All times are fictional and the timeline is simulated, not live execution.</p>
+        </div>
+      </section>
+      <section class="quiz" aria-labelledby="quiz-title">
+        <span class="quiz-label">CHECKPOINT 03 / FINAL ANALYSIS</span>
+        <h2 id="quiz-title">Why was the original activity missed?</h2>
+        <p>Use the evidence to choose the explanation that best matches both tests.</p>
+        <form id="quiz-form">
+          <div class="choices" role="group" aria-label="Final analysis choices">
+            <label class="choice"><input type="radio" name="reason" value="a"><span>The scanner automatically disabled itself because the program used Python.</span></label>
+            <label class="choice"><input type="radio" name="reason" value="b"><span>The original program postponed the file modification until after the scanner's monitoring window ended.</span></label>
+            <label class="choice"><input type="radio" name="reason" value="c"><span>Removing the delay also deleted the file modification.</span></label>
+            <label class="choice"><input type="radio" name="reason" value="d"><span>The scanner never monitors file changes.</span></label>
+          </div>
+          <div class="actions"><button type="submit" class="primary-button">SUBMIT INVESTIGATION <span aria-hidden="true">→</span></button><button type="button" id="hint-btn" class="outline" aria-expanded="false" aria-controls="hint-text">NEED A HINT?</button></div>
+        </form>
+        <p class="hint" id="hint-text" hidden>Compare when each version modifies the file with the scanner's end time (14:32:30). The file-writing operation stays in both versions.</p>
+        <div id="feedback" class="feedback" role="status" aria-live="polite" hidden></div>
+        <div id="next" hidden><a class="primary-button" href="flag.html">PROCEED TO FLAG RECOVERY <span aria-hidden="true">↗</span></a></div>
+      </section>
+      <a href="investigation.html" class="secondary-link back">← BACK TO CODE INVESTIGATION</a>
+    </div>
+  </main>
+  <footer>CYBER 266 // ADVERSARIAL MINDSET <span>THE SLEEPING PROCESS</span></footer>
+  <script>
+    'use strict';
+    const unlocked = sessionStorage.getItem('cyber266_stage3_complete') === 'yes';
+    document.getElementById('locked').hidden = unlocked;
+    document.getElementById('stage-content').hidden = !unlocked;
+    if (unlocked) {
+      const form = document.getElementById('quiz-form');
+      const feedback = document.getElementById('feedback');
+      const next = document.getElementById('next');
+      const hint = document.getElementById('hint-text');
+      document.getElementById('hint-btn').addEventListener('click', (e) => {
+        hint.hidden = !hint.hidden;
+        e.currentTarget.setAttribute('aria-expanded', String(!hint.hidden));
+      });
+      if (sessionStorage.getItem('cyber266_stage4_complete') === 'yes') {
+        next.hidden = false;
+        feedback.hidden = false;
+        feedback.className = 'feedback success';
+        feedback.textContent = '✓ Previous investigation verified. Flag recovery is unlocked.';
+      }
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const picked = new FormData(form).get('reason');
+        feedback.hidden = false;
+        if (picked === 'b') {
+          sessionStorage.setItem('cyber266_stage4_complete', 'yes');
+          feedback.className = 'feedback success';
+          feedback.textContent = '✓ Correct! The 97-second execution delay outlasted the 30-second scan. Removing only the delay made the file modification observable. Flag recovery unlocked.';
+          next.hidden = false;
+        } else {
+          sessionStorage.removeItem('cyber266_stage4_complete');
+          feedback.className = 'feedback error';
+          feedback.textContent = picked ? 'Not quite. Which activity happened before the scan ended, and which happened afterward?' : 'Choose an answer before submitting.';
+          next.hidden = true;
+        }
+      });
+      form.addEventListener('change', () => { feedback.hidden = true; next.hidden = true; sessionStorage.removeItem('cyber266_stage4_complete'); });
+    }
+  </script>
+</body>
+</html>

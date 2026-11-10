@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="The Sleeping Process CTF – Stage 2 Security Report and evidence checkpoint.">
+  <title>Security Report | The Sleeping Process</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .report-main{max-width:1100px;margin:0 auto;padding:65px 30px 95px}
+    .stage-kicker{color:var(--teal);font:12px Consolas,monospace;letter-spacing:1.6px;margin:0 0 18px}
+    .report-main h1{font-size:clamp(45px,6vw,75px);margin:0 0 23px}
+    .report-intro{color:var(--dim);max-width:740px;font-size:16px;margin:0 0 32px}
+    .case-status{display:inline-block;font:11px Consolas,monospace;color:#ffd792;border:1px solid #94723f;padding:8px 12px;margin-bottom:25px;background:#94723f1c}
+    .report-heading{margin:37px 0 15px;font-size:20px;letter-spacing:-.3px}
+    .evidence-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+    .evidence-card{border:1px solid var(--border);background:#111d2b;padding:18px 20px}
+    .evidence-card span{font:11px Consolas,monospace;letter-spacing:.9px;color:#95acc1;display:block;margin-bottom:8px}
+    .evidence-card strong{font-size:17px;overflow-wrap:anywhere}
+    .scan-log{background:#081321;border:1px solid #375066;border-radius:9px;overflow:hidden}
+    .scan-log-top{padding:13px 18px;border-bottom:1px solid #2e4358;background:#152336;color:#91d8e0;font:12px Consolas,monospace}
+    .scan-log pre{margin:0;padding:22px;overflow:auto;color:#c3d1dc;font:13px/2 Consolas,monospace}
+    .scan-log .quiet{color:#8da6bb}.scan-log .safe{color:#99efad}.scan-log .alert{color:#ffcb89}
+    .notice{border-left:3px solid var(--amber);background:#c78f2c17;color:#f4d8a1;padding:16px 18px;font-size:14px;margin-top:19px}
+    .checkpoint{margin-top:48px;padding:28px;border:1px solid #35556b;background:#0e1a29;border-radius:9px}
+    .checkpoint-label{color:var(--teal);font:12px Consolas,monospace;letter-spacing:1px}
+    .checkpoint h2{font-size:23px;margin:10px 0 14px}
+    .choices{display:grid;gap:11px;margin:24px 0}
+    .choice{display:flex;align-items:flex-start;gap:13px;padding:14px 16px;border:1px solid #34495d;background:#132236;border-radius:5px;cursor:pointer}
+    .choice:has(input:checked){border-color:var(--teal);background:#1b3c46}
+    .choice input{margin-top:4px;accent-color:var(--teal)}
+    .choice span{font-size:14px;color:#dae5ef}
+    .checkpoint-controls{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+    button{font:inherit;cursor:pointer}.primary-button{cursor:pointer}.primary-button:disabled{opacity:.5;cursor:not-allowed;transform:none}
+    .hint-button{border:1px solid #637b91;background:transparent;color:#d3e2ee;padding:14px 18px;font:12px Consolas,monospace}
+    .hint-button:hover{border-color:var(--teal)}
+    .feedback{margin-top:22px;padding:16px 18px;border-radius:5px;line-height:1.6;font-size:14px}
+    .feedback.correct{color:#a7f1bd;background:#123b2b;border:1px solid #387855}
+    .feedback.incorrect{color:#ffcfb4;background:#412922;border:1px solid #965e47}
+    .hint{margin-top:15px;color:#f4d8a1;font-size:14px}
+    .next-step{margin-top:18px}.back-link{display:inline-block;margin-top:35px}
+    [hidden]{display:none!important}
+    @media(max-width:620px){.report-main{padding:40px 18px 70px}.evidence-grid{grid-template-columns:1fr}.checkpoint{padding:20px}.scan-log pre{padding:15px;font-size:11px}.report-main h1{letter-spacing:-2px}}
+  </style>
+</head>
+<body>
+  <div class="ambient ambient-one" aria-hidden="true"></div>
+  <header class="site-header">
+    <a class="brand" href="index.html"><span class="brand-symbol">◈</span> CYBER <b>266</b> <span class="brand-secondary">/ CTF LAB</span></a>
+    <span class="top-status"><span class="status-dot"></span> CASE FILE 001</span>
+  </header>
+  <main class="report-main">
+    <p class="stage-kicker">STAGE 02 / EVIDENCE REVIEW</p>
+    <h1>SECURITY <em>REPORT.</em></h1>
+    <span class="case-status">● INVESTIGATION OPEN — CASE #266-017</span>
+    <p class="report-intro">A suspicious program was analyzed by an automated security scanner. The scanner reported no threats, but a later system event suggests the investigation is not over. Examine the evidence and decide what deserves attention.</p>
+
+    <h2 class="report-heading">01 / File details</h2>
+    <div class="evidence-grid" aria-label="File metadata">
+      <div class="evidence-card"><span>FILE UNDER INVESTIGATION</span><strong>system_update.py</strong></div>
+      <div class="evidence-card"><span>INITIAL VERDICT</span><strong style="color:#a0f0b0">SAFE — No threats found</strong></div>
+      <div class="evidence-card"><span>SCAN START</span><strong>14:32:00</strong></div>
+      <div class="evidence-card"><span>SCAN END</span><strong>14:32:30</strong></div>
+    </div>
+
+    <h2 class="report-heading">02 / Security scan log</h2>
+    <div class="scan-log" aria-label="Scanner and follow-up event log">
+      <div class="scan-log-top">◉ incident_266_017.log <span style="float:right;color:#8fa9bb">READ ONLY</span></div>
+      <pre><span class="quiet">[14:32:00]</span> Scanner initialized
+<span class="quiet">[14:32:02]</span> Process launched: system_update.py
+<span class="quiet">[14:32:10]</span> No suspicious behavior observed
+<span class="quiet">[14:32:20]</span> Process remains inactive
+<span class="safe">[14:32:30] Scan completed — Verdict: SAFE</span>
+
+<span class="alert">[14:34:07] External report: unexpected file modification</span></pre>
+    </div>
+    <div class="notice"><strong>Analyst note:</strong> The external report was collected separately from the scanner. Its event is not evidence that the scanner observed the behavior.</div>
+
+    <section class="checkpoint" aria-labelledby="checkpoint-title">
+      <span class="checkpoint-label">CHECKPOINT 01 / ANALYZE THE EVIDENCE</span>
+      <h2 id="checkpoint-title">What makes this result suspicious?</h2>
+      <p>The scanner marked <code>system_update.py</code> as safe. Select the strongest reason to continue investigating.</p>
+      <form id="analysis-form">
+        <div class="choices" role="group" aria-label="Analysis answer choices">
+          <label class="choice"><input type="radio" name="analysis" value="a"><span>The filename contains the word “update.”</span></label>
+          <label class="choice"><input type="radio" name="analysis" value="b"><span>Unexpected activity was reported after the scanner stopped monitoring.</span></label>
+          <label class="choice"><input type="radio" name="analysis" value="c"><span>The scanner took 30 seconds to finish.</span></label>
+          <label class="choice"><input type="radio" name="analysis" value="d"><span>The program was written in Python.</span></label>
+        </div>
+        <div class="checkpoint-controls">
+          <button class="primary-button" type="submit">SUBMIT ANALYSIS <span aria-hidden="true">→</span></button>
+          <button class="hint-button" id="hint-toggle" type="button" aria-expanded="false" aria-controls="hint-text">NEED A HINT?</button>
+        </div>
+      </form>
+      <p class="hint" id="hint-text" hidden>Hint: Compare the time the scanner ended with the timestamp of the unexpected file modification.</p>
+      <div class="feedback" id="feedback" role="status" aria-live="polite" hidden></div>
+      <div class="next-step" id="next-step" hidden><a class="primary-button" href="investigation.html">CONTINUE TO CODE INVESTIGATION <span aria-hidden="true">↗</span></a></div>
+    </section>
+    <a class="secondary-link back-link" href="index.html">← RETURN TO MISSION BRIEFING</a>
+  </main>
+  <footer>CYBER 266 // ADVERSARIAL MINDSET <span>THE SLEEPING PROCESS</span></footer>
+  <script>
+    const form = document.getElementById('analysis-form');
+    const feedback = document.getElementById('feedback');
+    const nextStep = document.getElementById('next-step');
+    const hintButton = document.getElementById('hint-toggle');
+    const hint = document.getElementById('hint-text');
+    hintButton.addEventListener('click', () => {
+      hint.hidden = !hint.hidden;
+      hintButton.setAttribute('aria-expanded', String(!hint.hidden));
+    });
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const picked = new FormData(form).get('analysis');
+      feedback.hidden = false;
+      if (!picked) {
+        feedback.className = 'feedback incorrect';
+        feedback.textContent = 'Select an answer before submitting.';
+        nextStep.hidden = true;
+      } else if (picked === 'b') {
+        feedback.className = 'feedback correct';
+        feedback.textContent = '✓ Correct! The unexpected activity was reported after the scan ended. A safe result only describes what the scanner observed during its monitoring window.';
+        nextStep.hidden = false;
+      } else {
+        feedback.className = 'feedback incorrect';
+        feedback.textContent = 'Not quite. Look at the timestamp of the last scanner entry and compare it with the external report. Try again!';
+        nextStep.hidden = true;
+      }
+    });
+    form.addEventListener('change', () => {feedback.hidden = true;nextStep.hidden = true;});
+  </script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="CYBER 266 educational CTF challenge about MITRE ATT&CK T1678 Delay Execution.">
+  <title>The Sleeping Process | CYBER 266 CTF</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="ambient ambient-one" aria-hidden="true"></div>
+  <div class="ambient ambient-two" aria-hidden="true"></div>
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="CTF home"><span class="brand-symbol">◈</span> CYBER <b>266</b> <span class="brand-secondary">/ CTF LAB</span></a>
+    <span class="top-status"><span class="status-dot"></span> CASE FILE 001</span>
+  </header>
+  <main>
+    <section class="hero" aria-labelledby="page-title">
+      <div class="eyebrow"><span class="eyebrow-line"></span> DIGITAL FORENSICS / INTERACTIVE CHALLENGE</div>
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <div class="classification">CLASSIFICATION: TRAINING ENVIRONMENT <span>●</span> BEGINNER</div>
+          <h1 id="page-title">THE <em>SLEEPING</em><br>PROCESS<span class="period">.</span></h1>
+          <p class="lead">The scanner found nothing. The logs tell another story.</p>
+          <p class="description">A suspicious program was marked <strong>SAFE</strong> after a routine security scan. Later, an unusual event appeared in the system logs. Your job is to investigate what happened, reconstruct the timeline, and identify how the process avoided observation.</p>
+          <div class="action-row">
+            <a class="primary-button" href="report.html">START INVESTIGATION <span aria-hidden="true">↗</span></a>
+            <a class="secondary-link" href="#mission-details">VIEW MISSION DETAILS ↓</a>
+          </div>
+        </div>
+        <aside class="terminal" aria-label="Case status preview">
+          <div class="terminal-header"><span><i></i><i></i><i></i></span><code>case_001 / initial_report.log</code><span class="terminal-tag">READ ONLY</span></div>
+          <div class="terminal-body">
+            <p class="terminal-comment">// INCIDENT RESPONSE CONSOLE</p>
+            <p><span class="terminal-prompt">&gt;</span> Loading case file <span class="muted">001...</span></p>
+            <p><span class="terminal-prompt">&gt;</span> Sample analyzed: <span class="good">COMPLETE</span></p>
+            <p><span class="terminal-prompt">&gt;</span> Scanner verdict: <span class="good">SAFE</span></p>
+            <p><span class="terminal-prompt">&gt;</span> Subsequent system event: <span class="warn">UNEXPLAINED</span></p>
+            <div class="terminal-rule"></div>
+            <p class="terminal-comment"># INVESTIGATION REQUIRED</p>
+            <p class="cursor-line"><span class="terminal-prompt">&gt;</span> Awaiting analyst <span class="cursor"></span></p>
+          </div>
+        </aside>
+      </div>
+    </section>
+    <section class="details" id="mission-details" aria-labelledby="mission-title">
+      <div class="section-heading"><span class="section-num">01 / MISSION PARAMETERS</span><h2 id="mission-title">Your assignment</h2></div>
+      <div class="detail-grid">
+        <article class="detail-card"><span class="card-icon">⌕</span><h3>Investigate</h3><p>Review the scanner's report and identify the evidence that doesn't add up.</p></article>
+        <article class="detail-card"><span class="card-icon">⌘</span><h3>Analyze</h3><p>Inspect the supplied script and investigate the timing of its behavior.</p></article>
+        <article class="detail-card"><span class="card-icon">◷</span><h3>Reconstruct</h3><p>Use the evidence to explain why the scanner missed a later event.</p></article>
+        <article class="detail-card"><span class="card-icon">⚑</span><h3>Capture</h3><p>Complete the investigation and submit a flag in the format <code>CYBER266{...}</code>.</p></article>
+      </div>
+      <div class="bottom-strip"><div><span class="mini-label">DIFFICULTY</span><strong>Beginner</strong></div><div><span class="mini-label">EST. TIME</span><strong>10–20 minutes</strong></div><div><span class="mini-label">TECHNIQUE</span><strong>MITRE ATT&CK T1678</strong></div><div><span class="mini-label">REQUIREMENTS</span><strong>Web browser only</strong></div></div>
+    </section>
+    <section class="disclaimer"><strong>TRAINING NOTICE</strong><p>This is a simulated, harmless cybersecurity investigation. No malware is executed and no personal data is collected by this static site.</p></section>
+  </main>
+  <footer>CYBER 266 // ADVERSARIAL MINDSET <span>THE SLEEPING PROCESS</span></footer>
+</body>
+</html>
